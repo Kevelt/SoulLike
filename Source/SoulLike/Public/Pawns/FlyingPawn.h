@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "FlyingPawn.generated.h"
 
 UCLASS()
@@ -25,10 +26,34 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InputMapping)
+	TObjectPtr<class UInputMappingContext> FlyingMappingContext;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InputMapping)
+	TObjectPtr<class UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InputMapping)
+	TObjectPtr<UInputAction> LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = InputMapping)
+	TObjectPtr<UInputAction> FlyAction;
+
+	void MoveForward(const FInputActionValue& Value);
+
+	void Look(const FInputActionValue& Value);
+
+	void Fly(const FInputActionValue& Value);
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UCapsuleComponent> CapsuleComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class USkeletalMeshComponent> FlyingSekeletalMeshComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class USpringArmComponent> SpringArmComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UCameraComponent> CameraComponent;
 };
