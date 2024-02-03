@@ -4,7 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "SoulLikeCharacter.generated.h"
+
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class SOULLIKE_API ASoulLikeCharacter : public ACharacter
@@ -15,15 +21,37 @@ public:
 	// Sets default values for this character's properties
 	ASoulLikeCharacter();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputMappingContext> SoulLikeCharacterMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> LookAction;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> JumpAction;
+
+	void MoveForward(const FInputActionValue& Value);
+
+	void LookAround(const FInputActionValue& Value);
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> CameraComponent;
 
 };
