@@ -23,6 +23,14 @@ ASoulLikeCharacter::ASoulLikeCharacter()
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 450.0f, 0.0f); // ...at this rotation rate
+
+	GetCharacterMovement()->JumpZVelocity = 700.f;
+	GetCharacterMovement()->AirControl = 0.35f;
+	GetCharacterMovement()->MaxWalkSpeed = 350.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArmComponent->SetupAttachment(GetRootComponent());
 	SpringArmComponent->TargetArmLength = 300.f;
