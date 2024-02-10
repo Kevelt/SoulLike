@@ -1,13 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Items/BaseItem.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
 ABaseItem::ABaseItem()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
@@ -22,12 +21,11 @@ void ABaseItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SphereCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, ABaseItem::OnBeginSphereCollisionOverlap);
-	SphereCollisionComponent->OnComponentEndOverlap.AddDynamic(this, ABaseItem::OnEndSphereCollisionOverlap);
-	
+	SphereCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ABaseItem::OnBeginSphereCollisionOverlap);
+	SphereCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ABaseItem::OnEndSphereCollisionOverlap);
 }
 
-void ABaseItem::OnBeginSphereCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ABaseItem::OnBeginSphereCollisionOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
 	const FString OtherActorName = OtherActor->GetName();
 	if (GEngine)
@@ -36,7 +34,7 @@ void ABaseItem::OnBeginSphereCollisionOverlap(UPrimitiveComponent* OverlappedCom
 	}
 }
 
-void ABaseItem::OnEndSphereCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ABaseItem::OnEndSphereCollisionOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
 	const FString OtherActorName = OtherActor->GetName();
 	if (GEngine)
@@ -49,6 +47,4 @@ void ABaseItem::OnEndSphereCollisionOverlap(UPrimitiveComponent* OverlappedCompo
 void ABaseItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
