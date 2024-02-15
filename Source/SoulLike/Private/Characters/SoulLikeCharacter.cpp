@@ -1,31 +1,35 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/CapsuleComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "UObject/ObjectPtr.h"
+
+#include "Characters/SoulLikeCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Pawns/FlyingPawn.h"
 
 // Sets default values
-AFlyingPawn::AFlyingPawn()
+ASoulLikeCharacter::ASoulLikeCharacter()
 {
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	bUseControllerRotationPitch = true;
-	bUseControllerRotationYaw = true;
+	// Don't rotate when the controller rotates. Let that just affect the camera.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
-	SetRootComponent(CapsuleComponent);
+	// Configure character movement
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	FlyingSekeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
-	FlyingSekeletalMeshComponent->SetupAttachment(GetRootComponent());
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 450.0f, 0.0f); // ...at this rotation rate
+
+	GetCharacterMovement()->JumpZVelocity = 700.f;
+	GetCharacterMovement()->AirControl = 0.35f;
+	GetCharacterMovement()->MaxWalkSpeed = 350.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArmComponent->SetupAttachment(GetRootComponent());
@@ -36,26 +40,27 @@ AFlyingPawn::AFlyingPawn()
 	CameraComponent->SetupAttachment(SpringArmComponent);
 	CameraComponent->bUsePawnControlRotation = false;
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned
-void AFlyingPawn::BeginPlay()
+void ASoulLikeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	// Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem< UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			SubSystem->AddMappingContext(FlyingMappingContext, 0);
+			SubSystem->AddMappingContext(SoulLikeCharacterMappingContext, 0);
 		}
 	}
+	
 }
 
-void AFlyingPawn::MoveForward(const FInputActionValue& Value)
+void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 {
+	// input is a Vector2D
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (GetController())
@@ -76,45 +81,45 @@ void AFlyingPawn::MoveForward(const FInputActionValue& Value)
 	}
 }
 
-void AFlyingPawn::Look(const FInputActionValue& Value)
+void ASoulLikeCharacter::LookAround(const FInputActionValue& Value)
 {
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	// input is a Vector2D
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (GetController())
 	{
+		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
 
-void AFlyingPawn::Fly(const FInputActionValue& Value)
-{
-	const float UpValue = Value.Get<float>();
-
-	if (GetController() && (UpValue != 0.f))
-	{
-		FVector Forward = GetActorUpVector();
-		AddMovementInput(Forward, UpValue);
-	}
-}
-
 // Called every frame
-void AFlyingPawn::Tick(float DeltaTime)
+void ASoulLikeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AFlyingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked< UEnhancedInputComponent>(PlayerInputComponent))
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) 
 	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AFlyingPawn::MoveForward);
-		EnhancedInputComponent->BindAction(FlyAction, ETriggerEvent::Triggered, this, &AFlyingPawn::Fly);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AFlyingPawn::Look);
+		//Jumping
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		//Moving
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::MoveForward);
+
+		//Looking
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::LookAround);
+
 	}
+
 }
 
