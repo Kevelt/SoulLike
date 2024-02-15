@@ -39,7 +39,7 @@ void ABaseItem::OnEndSphereCollisionOverlap(UPrimitiveComponent *OverlappedCompo
 	const FString OtherActorName = OtherActor->GetName();
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Blue, OtherActorName);
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, OtherActorName);
 	}
 }
 
