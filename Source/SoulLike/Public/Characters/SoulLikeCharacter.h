@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class ABaseItem;
 
 UCLASS()
 class SOULLIKE_API ASoulLikeCharacter : public ACharacter
@@ -23,6 +24,8 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FORCEINLINE void SetOverlappingItem(ABaseItem* ItemOverlap) { OverlappingItem = ItemOverlap; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,9 +46,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> EquipAction;
+
 	void MoveForward(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
+
+	void EquipItem();
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -54,4 +62,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> CameraComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<ABaseItem> OverlappingItem;
 };

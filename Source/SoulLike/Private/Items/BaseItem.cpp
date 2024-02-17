@@ -2,6 +2,7 @@
 
 #include "Items/BaseItem.h"
 #include "Components/SphereComponent.h"
+#include "Characters/SoulLikeCharacter.h"
 
 // Sets default values
 ABaseItem::ABaseItem()
@@ -27,19 +28,19 @@ void ABaseItem::BeginPlay()
 
 void ABaseItem::OnBeginSphereCollisionOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	const FString OtherActorName = OtherActor->GetName();
-	if (GEngine)
+	ASoulLikeCharacter* SoulLikeCharacter = Cast<ASoulLikeCharacter>(OtherActor);
+	if (SoulLikeCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Blue, OtherActorName);
+		SoulLikeCharacter->SetOverlappingItem(this);
 	}
 }
 
 void ABaseItem::OnEndSphereCollisionOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
-	const FString OtherActorName = OtherActor->GetName();
-	if (GEngine)
+	ASoulLikeCharacter* SoulLikeCharacter = Cast<ASoulLikeCharacter>(OtherActor);
+	if (SoulLikeCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, OtherActorName);
+		SoulLikeCharacter->SetOverlappingItem(nullptr);
 	}
 }
 

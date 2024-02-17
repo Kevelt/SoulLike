@@ -8,6 +8,8 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Items/BaseItem.h"
+#include "Items/Weapons/WeaponClass.h"
 
 // Sets default values
 ASoulLikeCharacter::ASoulLikeCharacter()
@@ -94,6 +96,15 @@ void ASoulLikeCharacter::LookAround(const FInputActionValue& Value)
 	}
 }
 
+void ASoulLikeCharacter::EquipItem()
+{
+	AWeaponClass* OverlappingWeaponItem = Cast<AWeaponClass>(OverlappingItem);
+	if (OverlappingWeaponItem)
+	{
+		OverlappingWeaponItem->EquipItem(GetMesh(), FName("hand_rSocket"));
+	}
+}
+
 // Called every frame
 void ASoulLikeCharacter::Tick(float DeltaTime)
 {
@@ -118,6 +129,9 @@ void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::LookAround);
+
+		//Equiping
+		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::EquipItem);
 
 	}
 
