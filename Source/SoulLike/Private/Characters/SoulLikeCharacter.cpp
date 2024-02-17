@@ -101,7 +101,7 @@ void ASoulLikeCharacter::EquipItem()
 	AWeaponClass* OverlappingWeaponItem = Cast<AWeaponClass>(OverlappingItem);
 	if (OverlappingWeaponItem)
 	{
-		OverlappingWeaponItem->EquipItem(GetMesh(), FName("hand_rSocket"));
+		OverlappingWeaponItem->EquipItem(GetMesh(), FName("hand_lSocket"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
 	}
 }
