@@ -34,6 +34,8 @@ protected:
 	UFUNCTION()
 	virtual void OnEndSphereCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 private:	
 	float CurrentTime;
 
@@ -42,9 +44,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float TimeConstant = 5.f;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> SphereCollisionComponent;
