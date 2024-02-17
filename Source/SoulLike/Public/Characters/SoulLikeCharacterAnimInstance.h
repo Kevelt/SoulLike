@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "SoulLikeCharacterTypes.h"
 #include "SoulLikeCharacterAnimInstance.generated.h"
 
 class ASoulLikeCharacter;
@@ -33,4 +34,5 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool isFalling;
 	
+	ESoulLikeCharacterState SoulLikeCharacterState;
 };

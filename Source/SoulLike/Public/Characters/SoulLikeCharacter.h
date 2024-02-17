@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "SoulLikeCharacterTypes.h"
 #include "SoulLikeCharacter.generated.h"
 
 class USpringArmComponent;
@@ -12,6 +13,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class ABaseItem;
+
 
 UCLASS()
 class SOULLIKE_API ASoulLikeCharacter : public ACharacter
@@ -26,6 +28,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FORCEINLINE void SetOverlappingItem(ABaseItem* ItemOverlap) { OverlappingItem = ItemOverlap; }
+
+	FORCEINLINE ESoulLikeCharacterState GetSoulLikeCharacterState() const { return SoulLikeCharacterState; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -64,4 +68,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ABaseItem> OverlappingItem;
+
+	ESoulLikeCharacterState SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
 };

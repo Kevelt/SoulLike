@@ -25,5 +25,6 @@ void USoulLikeCharacterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	{
 		MoveSpeed = UKismetMathLibrary::VSizeXY(SoulLikeCharacterMovement->Velocity);
 		isFalling = SoulLikeCharacterMovement->IsFalling();
+		SoulLikeCharacterState = SoulLikeCharacter->GetSoulLikeCharacterState();
 	}
 }
