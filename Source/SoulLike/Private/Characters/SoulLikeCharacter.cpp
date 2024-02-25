@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Items/BaseItem.h"
 #include "Items/Weapons/WeaponClass.h"
+#include "Animation/AnimMontage.h"
 
 // Sets default values
 ASoulLikeCharacter::ASoulLikeCharacter()
@@ -106,6 +107,48 @@ void ASoulLikeCharacter::EquipItem()
 	}
 }
 
+void ASoulLikeCharacter::Attack()
+{
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	if (AnimationInstance && AttackMontage)
+	{
+		AnimationInstance->Montage_Play(AttackMontage);
+		int32 RandomSelection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (RandomSelection)
+		{
+			case 0:
+				SectionName = FName("Attack1");
+				break;
+			case 1:
+				SectionName = FName("Attack2");
+				break;
+			default:
+				SectionName = FName("Attack1");
+				break;
+		}
+		AnimationInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
+}
+
+void ASoulLikeCharacter::RunForward()
+{
+	if (GetCharacterMovement())
+	{
+		isRunning = true;
+		GetCharacterMovement()->MaxWalkSpeed = 380.f;
+	}
+}
+
+void ASoulLikeCharacter::StopRunForward()
+{
+	if (GetCharacterMovement())
+	{
+		isRunning = false;
+		GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	}
+}
+
 // Called every frame
 void ASoulLikeCharacter::Tick(float DeltaTime)
 {
@@ -133,6 +176,15 @@ void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		//Equiping
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::EquipItem);
+
+		//Attacking
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::Attack);
+
+		//Attacking
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &ASoulLikeCharacter::RunForward);
+
+		//Attacking
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ASoulLikeCharacter::StopRunForward);
 
 	}
 

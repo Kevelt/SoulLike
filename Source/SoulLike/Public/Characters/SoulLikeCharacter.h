@@ -13,6 +13,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class ABaseItem;
+class UAnimMontage;
 
 
 UCLASS()
@@ -30,6 +31,8 @@ public:
 	FORCEINLINE void SetOverlappingItem(ABaseItem* ItemOverlap) { OverlappingItem = ItemOverlap; }
 
 	FORCEINLINE ESoulLikeCharacterState GetSoulLikeCharacterState() const { return SoulLikeCharacterState; }
+
+	FORCEINLINE bool GetIsRunning() const { return isRunning; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -53,11 +56,23 @@ protected:
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputAction> EquipAction;
 
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> AttackAction;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> RunAction;
+
 	void MoveForward(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
 
 	void EquipItem();
+
+	void Attack();
+
+	void RunForward();
+
+	void StopRunForward();
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -69,5 +84,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ABaseItem> OverlappingItem;
 
+	/* Animation Montages */
+
+	UPROPERTY(EditDefaultsOnly, Category = Montage)
+	TObjectPtr<UAnimMontage> AttackMontage;
+
 	ESoulLikeCharacterState SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
+
+	bool isRunning = false;
 };
