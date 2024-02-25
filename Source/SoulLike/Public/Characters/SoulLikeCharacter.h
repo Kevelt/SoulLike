@@ -8,13 +8,14 @@
 #include "SoulLikeCharacterTypes.h"
 #include "SoulLikeCharacter.generated.h"
 
+#pragma region UsedClass
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class ABaseItem;
 class UAnimMontage;
-
+#pragma endregion UsedClass
 
 UCLASS()
 class SOULLIKE_API ASoulLikeCharacter : public ACharacter
@@ -41,6 +42,7 @@ protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+#pragma region InputMappingAndAction
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputMappingContext> SoulLikeCharacterMappingContext;
 
@@ -61,7 +63,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputAction> RunAction;
+#pragma endregion InputMappingAndAction
 
+#pragma region InputEvents
+	/*
+	* Input Events
+	*/
 	void MoveForward(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
@@ -73,7 +80,14 @@ protected:
 	void RunForward();
 
 	void StopRunForward();
+#pragma endregion InputEvents
 
+#pragma region PlayMontagesEvent
+	/*
+	* Play Montages Event
+	*/
+	void PlayAttackMontage();
+#pragma endregion PlayMontagesEvent
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;

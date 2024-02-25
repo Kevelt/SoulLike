@@ -109,26 +109,7 @@ void ASoulLikeCharacter::EquipItem()
 
 void ASoulLikeCharacter::Attack()
 {
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	if (AnimationInstance && AttackMontage)
-	{
-		AnimationInstance->Montage_Play(AttackMontage);
-		int32 RandomSelection = FMath::RandRange(0, 1);
-		FName SectionName = FName();
-		switch (RandomSelection)
-		{
-			case 0:
-				SectionName = FName("Attack1");
-				break;
-			case 1:
-				SectionName = FName("Attack2");
-				break;
-			default:
-				SectionName = FName("Attack1");
-				break;
-		}
-		AnimationInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
+	PlayAttackMontage();
 }
 
 void ASoulLikeCharacter::RunForward()
@@ -146,6 +127,31 @@ void ASoulLikeCharacter::StopRunForward()
 	{
 		isRunning = false;
 		GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	}
+}
+
+void ASoulLikeCharacter::PlayAttackMontage()
+{
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	const bool IsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
+	if (AnimationInstance && AttackMontage && IsActiveMontage)
+	{
+		AnimationInstance->Montage_Play(AttackMontage);
+		const int32 RandomSelection = FMath::RandRange(0, 1);
+		FName SectionName = FName();
+		switch (RandomSelection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		default:
+			SectionName = FName("Attack1");
+			break;
+		}
+		AnimationInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
 
