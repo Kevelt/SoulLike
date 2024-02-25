@@ -66,6 +66,11 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 	// input is a Vector2D
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
+
+	if (!bIsActiveMontage) return;
+
 	if (GetController())
 	{
 		// find out which way is forward
@@ -86,6 +91,10 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 
 void ASoulLikeCharacter::LookAround(const FInputActionValue& Value)
 {
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
+
+	if (!bIsActiveMontage) return;
 	// input is a Vector2D
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -109,7 +118,11 @@ void ASoulLikeCharacter::EquipItem()
 
 void ASoulLikeCharacter::Attack()
 {
-	PlayAttackMontage();
+	const bool bCanAttack = SoulLikeCharacterState != ESoulLikeCharacterState::ESCS_Unequipped;
+	if (bCanAttack)
+	{
+		PlayAttackMontage();
+	}
 }
 
 void ASoulLikeCharacter::RunForward()
@@ -133,8 +146,8 @@ void ASoulLikeCharacter::StopRunForward()
 void ASoulLikeCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	const bool IsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
-	if (AnimationInstance && AttackMontage && IsActiveMontage)
+	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
+	if (AnimationInstance && AttackMontage && bIsActiveMontage)
 	{
 		AnimationInstance->Montage_Play(AttackMontage);
 		const int32 RandomSelection = FMath::RandRange(0, 1);
