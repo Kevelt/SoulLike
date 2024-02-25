@@ -199,10 +199,10 @@ void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		//Attacking
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASoulLikeCharacter::Attack);
 
-		//Attacking
+		//RunForward
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Started, this, &ASoulLikeCharacter::RunForward);
 
-		//Attacking
+		//StopRunForward
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ASoulLikeCharacter::StopRunForward);
 
 	}
