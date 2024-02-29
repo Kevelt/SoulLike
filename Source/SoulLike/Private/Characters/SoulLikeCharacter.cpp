@@ -45,6 +45,16 @@ ASoulLikeCharacter::ASoulLikeCharacter()
 
 }
 
+bool ASoulLikeCharacter::isMontageAnimationPlaying(const UAnimMontage* MontageAnimation)
+{
+	bool bIsActiveMontage = false;
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	if (AnimationInstance) {
+		bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(MontageAnimation);
+	}
+	return bIsActiveMontage;
+}
+
 // Called when the game starts or when spawned
 void ASoulLikeCharacter::BeginPlay()
 {
@@ -66,10 +76,7 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 	// input is a Vector2D
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
-
-	if (!bIsActiveMontage) return;
+	if (!isMontageAnimationPlaying(AttackMontage)) return;
 
 	if (GetController())
 	{
@@ -91,10 +98,7 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 
 void ASoulLikeCharacter::LookAround(const FInputActionValue& Value)
 {
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
-
-	if (!bIsActiveMontage) return;
+	if (!isMontageAnimationPlaying(AttackMontage)) return;
 	// input is a Vector2D
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -171,8 +175,7 @@ void ASoulLikeCharacter::PlayEquipUnequipMontage(FName SectionName)
 void ASoulLikeCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	const bool bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(AttackMontage);
-	if (AnimationInstance && AttackMontage && bIsActiveMontage)
+	if (AnimationInstance && AttackMontage && isMontageAnimationPlaying(AttackMontage))
 	{
 		AnimationInstance->Montage_Play(AttackMontage);
 		const int32 RandomSelection = FMath::RandRange(0, 1);

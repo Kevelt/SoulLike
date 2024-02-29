@@ -36,6 +36,8 @@ public:
 
 	FORCEINLINE bool GetIsRunning() const { return isRunning; }
 
+	bool isMontageAnimationPlaying(const UAnimMontage* MontageAnimation);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -92,6 +94,7 @@ protected:
 #pragma region PlayMontagesEvent
 	/*
 	* Play Montages Event
+	* 
 	*/
 	void PlayAttackMontage();
 
