@@ -54,6 +54,11 @@ bool ASoulLikeCharacter::isMontageAnimationPlaying(const UAnimMontage* MontageAn
 	return bIsActiveMontage;
 }
 
+bool ASoulLikeCharacter::isAnyNotifyAnimationTriggered(const FName NotifyName)
+{
+	return GetAnimationInstance()->WasAnimNotifyNameTriggeredInAnyState(NotifyName);
+}
+
 UAnimInstance* ASoulLikeCharacter::GetAnimationInstance()
 {
 	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();

@@ -39,6 +39,8 @@ public:
 
 	bool isMontageAnimationPlaying(const UAnimMontage* MontageAnimation);
 
+	bool isAnyNotifyAnimationTriggered(const FName NotifyName);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
