@@ -15,6 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 class ABaseItem;
 class UAnimMontage;
+class UAnimInstance;
 class AWeaponClass;
 #pragma endregion UsedClass
 
@@ -99,6 +100,7 @@ protected:
 	void PlayAttackMontage();
 
 	void PlayEquipUnequipMontage(const FName SectionName);
+
 #pragma endregion PlayMontagesEvent
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -124,4 +126,6 @@ private:
 	ESoulLikeCharacterState SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
 
 	bool isRunning = false;
+
+	UAnimInstance* GetAnimationInstance();
 };

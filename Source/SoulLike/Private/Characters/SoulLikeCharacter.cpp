@@ -48,11 +48,16 @@ ASoulLikeCharacter::ASoulLikeCharacter()
 bool ASoulLikeCharacter::isMontageAnimationPlaying(const UAnimMontage* MontageAnimation)
 {
 	bool bIsActiveMontage = false;
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	if (AnimationInstance) {
-		bIsActiveMontage = AnimationInstance->Montage_GetIsStopped(MontageAnimation);
+	if (GetAnimationInstance()) {
+		bIsActiveMontage = GetAnimationInstance()->Montage_GetIsStopped(MontageAnimation);
 	}
 	return bIsActiveMontage;
+}
+
+UAnimInstance* ASoulLikeCharacter::GetAnimationInstance()
+{
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	return AnimationInstance;
 }
 
 // Called when the game starts or when spawned
@@ -159,25 +164,24 @@ void ASoulLikeCharacter::EquipAndUnequipWeapon()
 	{
 		PlayEquipUnequipMontage(FName("Unequip"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
+
 	}
 }
 
 void ASoulLikeCharacter::PlayEquipUnequipMontage(FName SectionName)
 {
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	if (AnimationInstance && EquipUnequipMontage)
+	if (GetAnimationInstance() && EquipUnequipMontage)
 	{
-		AnimationInstance->Montage_Play(EquipUnequipMontage);
-		AnimationInstance->Montage_JumpToSection(SectionName, EquipUnequipMontage);
+		GetAnimationInstance()->Montage_Play(EquipUnequipMontage);
+		GetAnimationInstance()->Montage_JumpToSection(SectionName, EquipUnequipMontage);
 	}
 }
 
 void ASoulLikeCharacter::PlayAttackMontage()
 {
-	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
-	if (AnimationInstance && AttackMontage && isMontageAnimationPlaying(AttackMontage))
+	if (GetAnimationInstance() && AttackMontage && isMontageAnimationPlaying(AttackMontage))
 	{
-		AnimationInstance->Montage_Play(AttackMontage);
+		GetAnimationInstance()->Montage_Play(AttackMontage);
 		const int32 RandomSelection = FMath::RandRange(0, 1);
 		FName SectionName = FName();
 		switch (RandomSelection)
@@ -192,7 +196,7 @@ void ASoulLikeCharacter::PlayAttackMontage()
 			SectionName = FName("Attack1");
 			break;
 		}
-		AnimationInstance->Montage_JumpToSection(SectionName, AttackMontage);
+		GetAnimationInstance()->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
 
