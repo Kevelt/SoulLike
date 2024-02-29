@@ -15,6 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 class ABaseItem;
 class UAnimMontage;
+class AWeaponClass;
 #pragma endregion UsedClass
 
 UCLASS()
@@ -63,6 +64,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputAction> RunAction;
+
+	UPROPERTY(EditAnywhere, Category = InputMapping)
+	TObjectPtr<UInputAction> EquipUnequipWeaponAction;
 #pragma endregion InputMappingAndAction
 
 #pragma region InputEvents
@@ -80,6 +84,9 @@ protected:
 	void RunForward();
 
 	void StopRunForward();
+
+	void EquipAndUnequipWeapon();
+
 #pragma endregion InputEvents
 
 #pragma region PlayMontagesEvent
@@ -87,6 +94,8 @@ protected:
 	* Play Montages Event
 	*/
 	void PlayAttackMontage();
+
+	void PlayEquipUnequipMontage(const FName SectionName);
 #pragma endregion PlayMontagesEvent
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -98,10 +107,16 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<ABaseItem> OverlappingItem;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
+	TObjectPtr<AWeaponClass> EquippedWeapon;
+
 	/* Animation Montages */
 
 	UPROPERTY(EditDefaultsOnly, Category = Montage)
 	TObjectPtr<UAnimMontage> AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Montage)
+	TObjectPtr<UAnimMontage> EquipUnequipMontage;
 
 	ESoulLikeCharacterState SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
 

@@ -113,6 +113,7 @@ void ASoulLikeCharacter::EquipItem()
 	{
 		OverlappingWeaponItem->EquipItem(GetMesh(), FName("hand_lSocket"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
+		EquippedWeapon = OverlappingWeaponItem;
 	}
 }
 
@@ -140,6 +141,30 @@ void ASoulLikeCharacter::StopRunForward()
 	{
 		isRunning = false;
 		GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	}
+}
+
+void ASoulLikeCharacter::EquipAndUnequipWeapon()
+{
+	if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_Unequipped && EquippedWeapon)
+	{
+		PlayEquipUnequipMontage(FName("Equip"));
+		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
+	}
+	else if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_EquippedOneHand)
+	{
+		PlayEquipUnequipMontage(FName("Unequip"));
+		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
+	}
+}
+
+void ASoulLikeCharacter::PlayEquipUnequipMontage(FName SectionName)
+{
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	if (AnimationInstance && EquipUnequipMontage)
+	{
+		AnimationInstance->Montage_Play(EquipUnequipMontage);
+		AnimationInstance->Montage_JumpToSection(SectionName, EquipUnequipMontage);
 	}
 }
 
@@ -205,6 +230,8 @@ void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		//StopRunForward
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ASoulLikeCharacter::StopRunForward);
 
+		//EquipAndUnequipWeapon
+		EnhancedInputComponent->BindAction(EquipUnequipWeaponAction, ETriggerEvent::Started, this, &ASoulLikeCharacter::EquipAndUnequipWeapon);
 	}
 
 }
