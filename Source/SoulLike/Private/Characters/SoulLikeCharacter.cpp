@@ -169,12 +169,12 @@ void ASoulLikeCharacter::StopRunForward()
 
 void ASoulLikeCharacter::EquipAndUnequipWeapon()
 {
-	if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_Unequipped && EquippedWeapon)
+	if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_Unequipped && EquippedWeapon && !isAnyMontageAnimationPlaying())
 	{
 		PlayEquipUnequipMontage(FName("Equip"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
 	}
-	else if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_EquippedOneHand && EquippedWeapon)
+	else if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_EquippedOneHand && EquippedWeapon && !isAnyMontageAnimationPlaying())
 	{
 		PlayEquipUnequipMontage(FName("Unequip"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
