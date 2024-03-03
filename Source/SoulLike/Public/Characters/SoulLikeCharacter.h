@@ -50,6 +50,9 @@ protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToSockect(const FName SocketName);
+
 #pragma region InputMappingAndAction
 	UPROPERTY(EditAnywhere, Category = InputMapping)
 	TObjectPtr<UInputMappingContext> SoulLikeCharacterMappingContext;

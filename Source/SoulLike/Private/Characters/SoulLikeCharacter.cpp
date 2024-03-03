@@ -190,6 +190,14 @@ void ASoulLikeCharacter::PlayEquipUnequipMontage(FName SectionName)
 	}
 }
 
+void ASoulLikeCharacter::AttachWeaponToSockect(FName SocketName)
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), SocketName);
+	}
+}
+
 void ASoulLikeCharacter::PlayAttackMontage()
 {
 	if (GetAnimationInstance() && AttackMontage && isMontageAnimationPlaying(AttackMontage))
