@@ -54,6 +54,15 @@ bool ASoulLikeCharacter::isMontageAnimationPlaying(const UAnimMontage* MontageAn
 	return bIsActiveMontage;
 }
 
+bool ASoulLikeCharacter::isAnyMontageAnimationPlaying()
+{
+	bool bIsAnyActiveMontage = false;
+	if (GetAnimationInstance()) {
+		bIsAnyActiveMontage = GetAnimationInstance()->IsAnyMontagePlaying();
+	}
+	return bIsAnyActiveMontage;
+}
+
 bool ASoulLikeCharacter::isAnyNotifyAnimationTriggered(const FName NotifyName)
 {
 	return GetAnimationInstance()->WasAnimNotifyNameTriggeredInAnyState(NotifyName);
@@ -86,7 +95,7 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 	// input is a Vector2D
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (!isMontageAnimationPlaying(AttackMontage)) return;
+	if (isAnyMontageAnimationPlaying()) return;
 
 	if (GetController())
 	{
@@ -108,7 +117,7 @@ void ASoulLikeCharacter::MoveForward(const FInputActionValue& Value)
 
 void ASoulLikeCharacter::LookAround(const FInputActionValue& Value)
 {
-	if (!isMontageAnimationPlaying(AttackMontage)) return;
+	if (isAnyMontageAnimationPlaying()) return;
 	// input is a Vector2D
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 

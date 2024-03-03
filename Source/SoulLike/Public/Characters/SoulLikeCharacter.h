@@ -41,6 +41,8 @@ public:
 
 	bool isAnyNotifyAnimationTriggered(const FName NotifyName);
 
+	bool isAnyMontageAnimationPlaying();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -126,6 +128,8 @@ private:
 	TObjectPtr<UAnimMontage> EquipUnequipMontage;
 
 	ESoulLikeCharacterState SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
+
+	ESoulLikeCharacterActionState SoulLikeCharacterActionState = ESoulLikeCharacterActionState::ESCAS_Available;
 
 	bool isRunning = false;
 
