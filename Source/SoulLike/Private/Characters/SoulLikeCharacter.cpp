@@ -125,7 +125,7 @@ void ASoulLikeCharacter::EquipItem()
 	AWeaponClass* OverlappingWeaponItem = Cast<AWeaponClass>(OverlappingItem);
 	if (OverlappingWeaponItem)
 	{
-		OverlappingWeaponItem->EquipItem(GetMesh(), FName("hand_lSocket"));
+		OverlappingWeaponItem->AttachMeshToSocket(GetMesh(), FName("hand_lSocket"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
 		EquippedWeapon = OverlappingWeaponItem;
 	}
@@ -165,11 +165,10 @@ void ASoulLikeCharacter::EquipAndUnequipWeapon()
 		PlayEquipUnequipMontage(FName("Equip"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_EquippedOneHand;
 	}
-	else if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_EquippedOneHand)
+	else if (!isRunning && SoulLikeCharacterState == ESoulLikeCharacterState::ESCS_EquippedOneHand && EquippedWeapon)
 	{
 		PlayEquipUnequipMontage(FName("Unequip"));
 		SoulLikeCharacterState = ESoulLikeCharacterState::ESCS_Unequipped;
-
 	}
 }
 
