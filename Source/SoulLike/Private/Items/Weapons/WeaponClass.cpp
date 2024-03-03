@@ -14,7 +14,7 @@ void AWeaponClass::OnEndSphereCollisionOverlap(UPrimitiveComponent* OverlappedCo
 	Super::OnEndSphereCollisionOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 }
 
-void AWeaponClass::EquipItem(USceneComponent* InParent, FName SocketName)
+void AWeaponClass::AttachMeshToSocket(USceneComponent* InParent, FName SocketName)
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	StaticMeshComponent->AttachToComponent(InParent, TransformRules, SocketName);

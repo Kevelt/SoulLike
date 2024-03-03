@@ -15,7 +15,7 @@ class SOULLIKE_API AWeaponClass : public ABaseItem
 	GENERATED_BODY()
 
 public:
-	void EquipItem(USceneComponent* InParent, FName SocketName);
+	void AttachMeshToSocket(USceneComponent* InParent, FName SocketName);
 
 protected:
 	virtual void OnBeginSphereCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
