@@ -11,6 +11,7 @@
 #include "Items/BaseItem.h"
 #include "Items/Weapons/WeaponClass.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ASoulLikeCharacter::ASoulLikeCharacter()
@@ -61,6 +62,14 @@ bool ASoulLikeCharacter::isAnyMontageAnimationPlaying()
 		bIsAnyActiveMontage = GetAnimationInstance()->IsAnyMontagePlaying();
 	}
 	return bIsAnyActiveMontage;
+}
+
+void ASoulLikeCharacter::SetWeaponCollisionEnabled(const ECollisionEnabled::Type CollisionEnabled)
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->SetWeaponBoxCollision(CollisionEnabled);
+	}
 }
 
 bool ASoulLikeCharacter::isAnyNotifyAnimationTriggered(const FName NotifyName)

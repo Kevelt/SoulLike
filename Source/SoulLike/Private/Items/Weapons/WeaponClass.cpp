@@ -10,7 +10,7 @@ AWeaponClass::AWeaponClass()
 {
 	WeaponBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box"));
 	WeaponBoxComponent->SetupAttachment(GetRootComponent());
-	WeaponBoxComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	WeaponBoxComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	WeaponBoxComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	WeaponBoxComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 
@@ -57,4 +57,12 @@ void AWeaponClass::AttachMeshToSocket(USceneComponent* InParent, FName SocketNam
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 	StaticMeshComponent->AttachToComponent(InParent, TransformRules, SocketName);
+}
+
+void AWeaponClass::SetWeaponBoxCollision(const ECollisionEnabled::Type CollisionEnabled)
+{
+	if (WeaponBoxComponent)
+	{
+		WeaponBoxComponent->SetCollisionEnabled(CollisionEnabled);
+	}
 }

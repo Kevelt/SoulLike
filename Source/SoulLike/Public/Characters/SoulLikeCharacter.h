@@ -43,6 +43,9 @@ public:
 
 	bool isAnyMontageAnimationPlaying();
 
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponCollisionEnabled(const ECollisionEnabled::Type CollisionEnabled);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
