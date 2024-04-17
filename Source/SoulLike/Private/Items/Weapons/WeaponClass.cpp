@@ -5,6 +5,7 @@
 #include "Characters/SoulLikeCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Interfaces/HitInterface.h"
 
 AWeaponClass::AWeaponClass()
 {
@@ -51,6 +52,15 @@ void AWeaponClass::OnBeginBoxCollisionOverlap(UPrimitiveComponent* OverlappedCom
 	UKismetSystemLibrary::BoxTraceSingle(
 		this, StartBoxTrace, EndBoxTrace, FVector(2.5f, 2.5f, 2.5f), BoxTraceCollisionStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery1, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, BoxHitResult, true);
+
+	if (BoxHitResult.GetActor())
+	{
+		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHitResult.GetActor());
+		if (HitInterface)
+		{
+			HitInterface->GetHit(BoxHitResult.ImpactPoint);
+		}
+	}
 }
 
 void AWeaponClass::AttachMeshToSocket(USceneComponent* InParent, FName SocketName)

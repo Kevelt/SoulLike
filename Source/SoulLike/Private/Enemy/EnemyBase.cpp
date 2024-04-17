@@ -40,3 +40,8 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+void AEnemyBase::GetHit(const FVector& HitImpact)
+{
+	UE_LOG(LogTemp, Warning, TEXT("The vector value is: %s"), *HitImpact.ToString());
+}
+
