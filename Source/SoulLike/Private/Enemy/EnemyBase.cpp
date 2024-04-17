@@ -26,6 +26,7 @@ void AEnemyBase::BeginPlay()
 	
 }
 
+
 // Called every frame
 void AEnemyBase::Tick(float DeltaTime)
 {
@@ -40,8 +41,18 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+void AEnemyBase::PlayHitMontage()
+{
+	UAnimInstance* AnimationInstance = GetMesh()->GetAnimInstance();
+	if (AnimationInstance && HitMontage)
+	{
+		AnimationInstance->Montage_Play(HitMontage);
+	}
+}
+
 void AEnemyBase::GetHit(const FVector& HitImpact)
 {
 	UE_LOG(LogTemp, Warning, TEXT("The vector value is: %s"), *HitImpact.ToString());
+	PlayHitMontage();
 }
 

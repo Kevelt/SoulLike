@@ -7,6 +7,10 @@
 #include "Interfaces/HitInterface.h"
 #include "EnemyBase.generated.h"
 
+#pragma region UsedClass
+class UAnimMontage;
+#pragma endregion UsedClass
+
 UCLASS()
 class SOULLIKE_API AEnemyBase : public ACharacter, public IHitInterface
 {
@@ -27,6 +31,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:	
+#pragma region PlayMontagesEvent
+	/*
+	* Play Montages Event
+	*/
+	void PlayHitMontage();
+
+#pragma endregion PlayMontagesEvent
+
+private:
+	/* Animation Montages */
+
+	UPROPERTY(EditDefaultsOnly, Category = Montage)
+	TObjectPtr<UAnimMontage> HitMontage;
 
 };
