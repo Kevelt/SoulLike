@@ -4,6 +4,7 @@
 #include "Enemy/EnemyBase.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemyBase::AEnemyBase()
@@ -75,5 +76,8 @@ void AEnemyBase::GetHit(const FVector& HitImpact)
 		Theta *= -1.f;
 	}
 
+	if (HitSound) {
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, HitImpact);
+	}
 }
 
