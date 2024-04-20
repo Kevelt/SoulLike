@@ -10,6 +10,7 @@
 #pragma region UsedClass
 class UAnimMontage;
 class USoundBase;
+class UParticleSystem;
 #pragma endregion UsedClass
 
 UCLASS()
@@ -48,5 +49,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Sounds)
 	TObjectPtr<USoundBase> HitSound;
+
+	UPROPERTY(EditAnywhere, Category = Sounds)
+	TObjectPtr<UParticleSystem> HitParticle;
 
 };

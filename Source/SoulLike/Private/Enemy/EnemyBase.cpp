@@ -79,5 +79,9 @@ void AEnemyBase::GetHit(const FVector& HitImpact)
 	if (HitSound) {
 		UGameplayStatics::PlaySoundAtLocation(this, HitSound, HitImpact);
 	}
+
+	if (HitParticle && GetWorld()) {
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticle, HitImpact);
+	}
 }
 
