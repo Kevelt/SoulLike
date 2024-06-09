@@ -60,6 +60,9 @@ void AWeaponClass::OnBeginBoxCollisionOverlap(UPrimitiveComponent* OverlappedCom
 		{
 			HitInterface->GetHit(BoxHitResult.ImpactPoint);
 		}
+
+		CreateFields(BoxHitResult.ImpactPoint);
+
 	}
 }
 
