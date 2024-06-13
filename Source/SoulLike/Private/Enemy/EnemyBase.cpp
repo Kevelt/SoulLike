@@ -51,7 +51,7 @@ void AEnemyBase::PlayHitMontage()
 	}
 }
 
-void AEnemyBase::GetHit(const FVector& HitImpact)
+void AEnemyBase::GetHit_Implementation(const FVector& HitImpact)
 {
 	UE_LOG(LogTemp, Warning, TEXT("The vector value is: %s"), *HitImpact.ToString());
 	PlayHitMontage();
