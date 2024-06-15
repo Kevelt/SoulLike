@@ -23,3 +23,7 @@ void ABreakableClass::Tick(float DeltaTime)
 
 }
 
+void ABreakableClass::GetHit_Implementation(const FVector& ImpactPoint)
+{
+}
+

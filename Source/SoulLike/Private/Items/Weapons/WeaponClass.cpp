@@ -58,7 +58,7 @@ void AWeaponClass::OnBeginBoxCollisionOverlap(UPrimitiveComponent* OverlappedCom
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHitResult.GetActor());
 		if (HitInterface)
 		{
-			HitInterface->GetHit(BoxHitResult.ImpactPoint);
+			IHitInterface::Execute_GetHit(BoxHitResult.GetActor(), BoxHitResult.ImpactPoint);
 		}
 
 		CreateFields(BoxHitResult.ImpactPoint);
