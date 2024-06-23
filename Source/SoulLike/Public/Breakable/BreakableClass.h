@@ -8,6 +8,8 @@
 #include "BreakableClass.generated.h"
 
 class UGeometryCollectionComponent;
+class ATreasureClass;
+class UCapsuleComponent;
 
 UCLASS()
 class SOULLIKE_API ABreakableClass : public AActor, public IHitInterface
@@ -23,7 +25,15 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UGeometryCollectionComponent> GeometryCollection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCapsuleComponent> CapsuleComponent;
+
+private:
+
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ATreasureClass> TreasureClassReference;
 };
