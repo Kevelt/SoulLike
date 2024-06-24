@@ -32,8 +32,6 @@ protected:
 	TObjectPtr<UCapsuleComponent> CapsuleComponent;
 
 private:
-
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<ATreasureClass> TreasureClassReference;
+	UPROPERTY(EditAnywhere, Category = BreakProperties)
+	TArray<TSubclassOf<ATreasureClass>> TreasureClassList;
 };
